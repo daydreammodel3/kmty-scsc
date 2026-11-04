@@ -1,0 +1,173 @@
+/* Small, Cute, Stylized Characters */
+:root {
+  --bg: #fdf8f1;
+  --accent: #b5527a;
+  --cream: #fffaf2;
+  --soft-line: #efdcc6;
+}
+
+body {
+  background:
+    radial-gradient(circle at 0 0, #ffe9ef 0, transparent 35%),
+    radial-gradient(circle at 100% 0, #e8f4dc 0, transparent 35%),
+    var(--bg);
+}
+
+.chara-svg, .nest-svg { display: block; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+
+/* ---- ヘッダー */
+.app-header-brand { gap: 10px; color: var(--text); }
+.brand-chara { width: 40px; height: 40px; flex: none; }
+.brand-text { display: flex; flex-direction: column; line-height: 1.2; }
+.app-header-logo { font-weight: 700; font-size: 1.15rem; letter-spacing: .02em; }
+.brand-tagline { font-size: .78rem; color: var(--muted); }
+
+/* ---- トップ: なかま紹介 */
+.chara-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; }
+.chara-row-item { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 92px; font-size: .9rem; color: var(--muted); }
+.chara-row-item .chara-pic { width: 72px; height: 72px; animation: chara-bob 3s ease-in-out infinite; }
+.chara-row-item:nth-child(2) .chara-pic { animation-delay: -.7s; }
+.chara-row-item:nth-child(3) .chara-pic { animation-delay: -1.4s; }
+.chara-row-item:nth-child(4) .chara-pic { animation-delay: -2.1s; }
+.chara-row-score { justify-content: center; margin: -4px 0 6px; }
+.chara-row-score .chara-row-item { width: 56px; height: 56px; }
+
+/* ---- マウス練習の的（大きさ・当たり判定は元のまま。背景を消してキャラだけ見せる） */
+#target.chara, .click-target.chara {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
+}
+#target.chara:hover .chara-svg, .click-target.chara:hover .chara-svg { transform: scale(1.06); }
+#target.chara:focus-visible, .click-target.chara:focus-visible { outline: 4px solid var(--accent); outline-offset: 2px; }
+
+.icon-box.chara {
+  background: transparent;
+  border: none;
+  font-size: 0;
+}
+.icon-box.chara.is-happy .chara-svg { animation: chara-jump .5s ease-out; }
+
+.drag-item.chara {
+  background: transparent;
+  border: none;
+  font-size: 0;
+}
+.drag-item.chara:active { cursor: grabbing; }
+
+.nest-zone {
+  border-color: #e2b98a !important;
+  background: #fff6ea !important;
+  color: #8a5a2b !important;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px;
+  text-align: center;
+  line-height: 1.3;
+}
+.nest-zone .nest-svg { width: 120px; height: 52px; }
+.nest-label { font-size: 15px; }
+
+/* ---- キーボード: ふくろう先生 */
+.owl-guide { display: flex; align-items: center; gap: 10px; margin: 4px 0 10px; }
+.owl-guide-chara { width: 68px; height: 68px; flex: none; }
+.owl-guide-bubble {
+  position: relative;
+  background: #fff;
+  border: 2px solid #c9bdea;
+  border-radius: 16px;
+  padding: 8px 14px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #4a3d73;
+}
+.owl-guide-bubble::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 8px solid transparent;
+  border-right-color: #c9bdea;
+  border-left: 0;
+}
+.owl-guide.is-oops .owl-guide-chara { animation: chara-shake .3s; }
+
+/* ---- 声かけ */
+.chara-toast {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  z-index: 300;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .2s, transform .2s;
+}
+.chara-toast.is-show { opacity: 1; transform: translateY(0); }
+.chara-toast-chara { width: 64px; height: 64px; }
+.chara-toast-bubble {
+  margin-bottom: 30px;
+  background: #fff;
+  border: 2px solid var(--soft-line);
+  border-radius: 14px;
+  padding: 6px 12px;
+  font-weight: 700;
+  box-shadow: var(--shadow);
+  order: -1;
+}
+
+@keyframes chara-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes chara-jump { 0% { transform: translateY(0); } 40% { transform: translateY(-14px); } 100% { transform: translateY(0); } }
+@keyframes chara-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .chara-row-item .chara-pic, .icon-box.chara.is-happy .chara-svg, .owl-guide.is-oops .owl-guide-chara { animation: none; }
+  .chara-toast { transition: none; }
+}
+
+@media (max-width: 600px) {
+  .cat-tabs { flex-direction: column; }
+  .brand-tagline { display: none; }
+  .chara-row:not(.chara-row-score) { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .chara-row-item { width: auto; font-size: .8rem; text-align: center; line-height: 1.3; }
+  .chara-row-item small { font-size: .68rem; }
+  .chara-row-item .chara-pic { width: 56px; height: 56px; }
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ---- おとな / こども 切り替え */
+.audience-toggle { display: flex; gap: 4px; padding: 4px; background: #f6efe6; border-radius: 999px; }
+.audience-btn {
+  display: flex; flex-direction: column; align-items: center; line-height: 1.15;
+  min-width: 88px; min-height: 44px; padding: 4px 14px;
+  border: 0; border-radius: 999px; background: transparent;
+  font-size: 1rem; font-weight: 700; color: var(--muted); cursor: pointer;
+}
+.audience-btn small { font-size: .68rem; font-weight: 400; }
+.audience-btn[aria-pressed="true"] { background: #fff; color: var(--accent); box-shadow: 0 2px 6px rgba(120, 80, 40, .15); }
+.audience-btn[data-audience-btn="kids"][aria-pressed="true"] { color: #2f8a4a; }
+.audience-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.audience-btn:disabled { opacity: .5; cursor: not-allowed; }
+body[data-audience="kids"] { background: radial-gradient(circle at 0 0, #fff1c9 0, transparent 35%), radial-gradient(circle at 100% 0, #dff3e4 0, transparent 35%), var(--bg); }
+@media (max-width: 600px) {
+  .audience-btn { min-width: 70px; padding: 4px 8px; }
+  .audience-btn small { display: none; }
+}
+/* こどもモード: 漢字の練習は出さない。問題はひらがなだけなので、同じ行の重複も隠す。 */
+.mode-btn[hidden] { display: none !important; }
+body[data-audience="kids"] .typing-vertical .typing-line:first-child { display: none; }

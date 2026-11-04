@@ -1,0 +1,36 @@
+/* ==================== ユニバーサルデザインフォント ====================
+   BIZ UDPゴシック（SIL Open Font License 1.1: ../fonts/OFL.txt）。
+   端末にインストール済みならそれを使い、なければ配信ファイルを読み込む。
+   全ページの文字は var(--font) を使う。 */
+
+@font-face {
+  font-family: "BIZ UDPGothic";
+  font-weight: 400;
+  font-display: swap;
+  src: local("BIZ UDPGothic"), local("BIZUDPGothic"),
+       url("../fonts/BIZUDPGothic-Regular.subset.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "BIZ UDPGothic";
+  font-weight: 700;
+  font-display: swap;
+  src: local("BIZ UDPGothic Bold"), local("BIZUDPGothic-Bold"),
+       url("../fonts/BIZUDPGothic-Bold.subset.woff2") format("woff2");
+}
+
+:root {
+  --font: "BIZ UDPGothic", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+}
+
+body {
+  font-family: var(--font);
+}
+
+/* ボタンや入力欄は、ブラウザーの既定ではページの文字を引き継がないため明示する。 */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}

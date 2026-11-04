@@ -1,0 +1,362 @@
+/* ==================== グローバル デザイン統一 ==================== */
+
+:root {
+  --bg: #f4f8fd;
+  --panel: #ffffff;
+  --line: #d5dfeb;
+  --text: #1e2a36;
+  --muted: #5d6f80;
+  --accent: #0b5f8e;
+  --safe: #1f7a4d;
+  --warn: #a16800;
+  --risk: #9d2a3b;
+  --shadow: 0 10px 22px rgba(31, 61, 89, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: var(--text);
+  background: radial-gradient(circle at 100% 0, #d9ebff 0, transparent 40%), var(--bg);
+  line-height: 1.6;
+}
+
+/* ==================== ヘッダー ==================== */
+
+.app-header {
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 2px 8px rgba(31, 61, 89, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.app-header-content {
+  width: min(980px, 100%);
+  margin: 0 auto;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.app-header-brand:hover {
+  opacity: 0.8;
+}
+
+.app-header-logo {
+  font-weight: bold;
+  font-size: 18px;
+  color: var(--accent);
+}
+
+.app-header-nav {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.app-header-link {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.app-header-link:hover {
+  background: rgba(11, 95, 142, 0.08);
+}
+
+.app-header-link.active {
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.app-header-status {
+  font-size: 12px;
+  color: var(--muted);
+  padding: 4px 8px;
+  background: rgba(11, 95, 142, 0.04);
+  border-radius: 4px;
+}
+
+/* ==================== メインレイアウト ==================== */
+
+main {
+  width: min(980px, 100%);
+  margin: 0 auto;
+  padding: 18px 14px 34px;
+}
+
+/* ==================== ヒーロー セクション ==================== */
+
+.hero {
+  background: linear-gradient(135deg, #ffffff 0%, #f5fbff 62%, #f9f5ff 100%);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+
+.hero .eyebrow {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #e5f2ff;
+  color: var(--accent);
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.hero h1 {
+  margin: 8px 0 12px;
+  font-size: 34px;
+  font-weight: 600;
+}
+
+.hero > p {
+  margin: 6px 0;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.hero-links {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.hero-links a {
+  display: inline-flex;
+  align-items: center;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.hero-links a:hover {
+  opacity: 0.7;
+}
+
+/* ==================== カード セクション ==================== */
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+
+.card h2 {
+  margin: 0 0 12px;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.card h3 {
+  margin: 16px 0 10px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.card p {
+  margin: 8px 0;
+  font-size: 15px;
+}
+
+/* ==================== ボタン ==================== */
+
+.btn {
+  display: inline-block;
+  padding: 10px 16px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  font-family: inherit;
+}
+
+.btn:hover:not(:disabled) {
+  background: #094b70;
+  transform: translateY(-1px);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn.secondary {
+  background: var(--line);
+  color: var(--text);
+}
+
+.btn.secondary:hover:not(:disabled) {
+  background: #c5d0dd;
+}
+
+/* ==================== フォーム要素 ==================== */
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+textarea {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--panel);
+  transition: border-color 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(11, 95, 142, 0.1);
+}
+
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+input[type="email"]:disabled,
+input[type="number"]:disabled,
+textarea:disabled {
+  background: #f0f4fa;
+  color: var(--muted);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  cursor: pointer;
+}
+
+/* ==================== 情報ボックス ==================== */
+
+.note {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 8px 0;
+}
+
+.hint-list {
+  margin: 12px 0;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.hint-list li {
+  margin: 4px 0;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.warning-box,
+.info-box {
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+  border-left: 4px solid;
+}
+
+.warning-box {
+  background: #fff3f1;
+  border-left-color: var(--warn);
+}
+
+.warning-box strong {
+  color: var(--warn);
+}
+
+.info-box {
+  background: #e5f2ff;
+  border-left-color: var(--accent);
+}
+
+.info-box strong {
+  color: var(--accent);
+}
+
+/* ==================== ユーティリティ ==================== */
+
+.row {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.row.actions {
+  justify-content: flex-start;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* ==================== レスポンシブ ==================== */
+
+@media (max-width: 768px) {
+  .app-header-nav {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .hero {
+    padding: 18px;
+  }
+
+  .hero h1 {
+    font-size: 26px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+}

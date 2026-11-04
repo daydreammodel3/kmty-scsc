@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>kmty-SCSC — マウスとキーボードの練習</title>
+  <meta name="description" content="小さくてかわいいキャラクターと一緒に、クリック・ダブルクリック・ドラッグ・キーボード入力を練習できる無料サイト。">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/basic_ops_training.css">
+  <link rel="stylesheet" href="css/characters.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-header-content">
+      <a href="./" class="app-header-brand">
+        <span class="brand-chara" data-chara="mochi"></span>
+        <span class="brand-text">
+          <span class="app-header-logo" data-site-name>kmty-SCSC</span>
+          <span class="brand-tagline" data-site-tagline>Keyboard and Mouse Training Yard as Small, Cute, Stylized Characters.</span>
+        </span>
+      </a>
+      <div class="audience-toggle" role="group" aria-label="モードの切り替え">
+        <button type="button" class="audience-btn" data-audience-btn="adult" aria-pressed="true">おとな<small>中学生以上</small></button>
+        <button type="button" class="audience-btn" data-audience-btn="kids" aria-pressed="false">こども<small>小学生まで</small></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <span class="eyebrow">マウスとキーボードの練習</span>
+      <h1 id="heroTitle" data-kids-text="ちいさな なかまと、パソコンに なれよう">小さななかまと、パソコンに慣れよう</h1>
+      <p data-kids-text="クリック、ダブルクリック、ドラッグ&amp;ドロップ、もじの にゅうりょくを、ゲームみたいに れんしゅうできるよ。">クリック、ダブルクリック、ドラッグ&amp;ドロップ、文字の入力を、ゲーム感覚で練習できます。</p>
+      <p data-kids-text="とうろくは いらないよ。れんしゅうの きろくは どこにも おくられないよ。">登録はいりません。練習の記録はどこにも送られません。</p>
+      <div class="chara-row" aria-label="なかまたち">
+        <span class="chara-row-item"><span class="chara-pic" data-chara="mochi"></span>もち<br><small>クリック</small></span>
+        <span class="chara-row-item"><span class="chara-pic" data-chara="neko"></span>ねこ<br><small>ダブルクリック</small></span>
+        <span class="chara-row-item"><span class="chara-pic" data-chara="hiyoko"></span>ひよこ<br><small>ドラッグ</small></span>
+        <span class="chara-row-item"><span class="chara-pic" data-chara="owl"></span>ふくろう先生<br><small>キーボード</small></span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>練習カテゴリ選択</h2>
+      <p id="sessionText">演習未開始</p>
+      <div class="help" data-kids-text="コツ: はやさより、まず まちがえないことが だいじ。なれてきたら すこしずつ はやくしよう。">コツ: 速さよりも、まず正確さを重視しましょう。慣れてきたら少しずつ速度を上げます。</div>
+      <div class="cat-tabs" aria-label="練習カテゴリ">
+        <button id="catMouseBtn" class="cat-btn active" type="button">マウス入力練習</button>
+        <button id="catKeyboardBtn" class="cat-btn" type="button">キーボード入力練習</button>
+        <button id="catComprehensiveBtn" class="cat-btn" type="button">総合演習</button>
+      </div>
+      <div id="mouseSubMenu" class="sub-menu" aria-label="マウス練習モード">
+        <button id="modeClickBtn" class="mode-btn active" type="button">クリック練習</button>
+        <button id="modeDoubleBtn" class="mode-btn" type="button">ダブルクリック練習</button>
+        <button id="modeDragBtn" class="mode-btn" type="button">ドラッグ&ドロップ練習</button>
+      </div>
+      <div id="keyboardSubMenu" class="sub-menu" style="display:none" aria-label="キーボード練習レベル">
+        <button id="levelHiraBtn" class="mode-btn level-btn active" data-level="hira" type="button">ひらがな</button>
+        <button id="levelKanjiBtn" class="mode-btn level-btn" data-level="kanji" type="button">漢字</button>
+        <button id="levelSymbolBtn" class="mode-btn level-btn" data-level="symbol" type="button">記号</button>
+        <button id="levelSentenceBtn" class="mode-btn level-btn" data-level="sentence" type="button">日本語文章</button>
+      </div>
+      <div id="comprehensiveSubMenu" class="sub-menu" style="display:none" aria-label="総合演習サブカテゴリ">
+        <button id="compMouseBtn" class="mode-btn active" type="button">マウス演習</button>
+        <button id="compKeyboardBtn" class="mode-btn" type="button">キーボード演習</button>
+      </div>
+    </section>
+
+    <section class="card exercise-pane active" id="paneClick">
+      <div class="pane-head">
+        <button id="startBtn" type="button">スタート</button>
+      </div>
+      <div class="phase" id="phaseText">フェーズ: 準備中</div>
+      <div class="status" id="statusText">開始ボタンを押してください。</div>
+      <div id="arena" aria-label="クリック演習エリア">
+        <button id="target" aria-label="もち（クリックする）"></button>
+      </div>
+      <div class="metrics">
+        <div class="metric" id="roundMetric">ラウンド: 0 / 12</div>
+        <div class="metric" id="missMetric">ミスクリック: 0</div>
+        <div class="metric" id="avgMetric">平均反応時間: -</div>
+        <div class="metric" id="bestMetric">最短反応時間: -</div>
+        <div class="metric" id="scoreMetric">スコア: 0</div>
+        <div class="metric" id="comboMetric">コンボ: 0</div>
+        <div class="metric" id="timeMetric">残り時間: 90秒</div>
+      </div>
+      <div class="meter" aria-label="進行度"><div id="progressBar"></div></div>
+      <div class="result" id="resultText"></div>
+    </section>
+
+    <section class="card exercise-pane" id="paneDouble">
+      <div class="pane-head">
+        <button id="doubleStartBtn" type="button">ダブルクリック開始</button>
+      </div>
+      <div class="status" id="doubleStatus">ダブルクリック練習: スタートで開始</div>
+      <div id="doubleArena" class="mini-arena free">
+        <div id="doubleIcon" class="icon-box" role="button" aria-label="ねこ（ダブルクリックする）"></div>
+      </div>
+      <div class="metrics">
+        <div class="metric" id="doubleRoundMetric">成功: 0 / 6</div>
+        <div class="metric" id="doubleMissMetric">失敗: 0</div>
+        <div class="metric" id="doubleAvgMetric">平均間隔: -</div>
+      </div>
+      <div class="result" id="doubleResult"></div>
+    </section>
+
+    <section class="card exercise-pane" id="paneDrag">
+      <div class="pane-head">
+        <button id="dragStartBtn" type="button">ドラッグ練習開始</button>
+      </div>
+      <div class="status" id="dragStatus">ドラッグ&ドロップ練習: スタートで開始</div>
+      <div id="dragArena" class="mini-arena free">
+        <div id="dragSourceWrap" class="drag-source-wrap">
+          <div id="dragItem" class="drag-item" draggable="true" aria-label="ひよこ（ドラッグする）"></div>
+        </div>
+        <div id="dropZone" class="drop-zone" aria-label="ドロップ先">ここに置く</div>
+      </div>
+      <div class="metrics">
+        <div class="metric" id="dragRoundMetric">成功: 0 / 5</div>
+        <div class="metric" id="dragMissMetric">失敗: 0</div>
+        <div class="metric" id="dragTimeMetric">平均所要時間: -</div>
+      </div>
+      <div class="result" id="dragResult"></div>
+    </section>
+
+    <section class="card exercise-pane" id="paneComprehensiveMouse">
+      <div class="pane-head">
+        <button id="compMouseStartBtn" type="button">総合マウス演習開始</button>
+      </div>
+      <div class="phase" id="compMousePhaseText">モード: 準備中</div>
+      <div class="status" id="compMouseStatus">マウス演習: クリック、ダブルクリック、ドラッグをランダムに2分間続けます</div>
+      <div id="compMouseArena" class="mini-arena free" aria-label="総合マウス演習エリア">
+        <button id="compMouseTarget" class="click-target" aria-label="もち（クリックする）"></button>
+        <div id="compMouseDoubleIcon" class="icon-box" role="button" aria-label="ねこ（ダブルクリックする）"></div>
+        <div id="compMouseDragSourceWrap" class="drag-source-wrap">
+          <div id="compMouseDragItem" class="drag-item" draggable="true" aria-label="ひよこ（ドラッグする）"></div>
+        </div>
+        <div id="compMouseDropZone" class="drop-zone" aria-label="ドロップ先">ここに置く</div>
+      </div>
+      <div class="metrics">
+        <div class="metric" id="compMouseTimeMetric">残り時間: 120秒</div>
+        <div class="metric" id="compMouseRoundMetric">成功: 0</div>
+        <div class="metric" id="compMouseMissMetric">失敗: 0</div>
+      </div>
+      <div class="result" id="compMouseResult"></div>
+    </section>
+
+    <section class="card exercise-pane" id="paneKeyboard">
+      <div class="pane-head">
+        <button id="keyboardStartBtn" type="button">入力練習開始</button>
+      </div>
+      <div class="status" id="keyboardStatus">キーボード入力練習: スタートで開始</div>
+
+      <div class="typing-area">
+        <p class="typing-label">入力対象（縦表示）</p>
+        <div class="typing-vertical" aria-label="入力対象">
+          <div class="typing-line">
+            <p id="typingPromptText" class="typing-line-value">あ</p>
+          </div>
+          <div class="typing-line">
+            <p id="typingPromptHira" class="typing-line-value">あ</p>
+          </div>
+          <div class="typing-line">
+            <p id="typingPromptRoma" class="typing-line-value">a</p>
+          </div>
+        </div>
+        <label class="typing-label" for="typingInput">入力欄（1文字ごとに自動判定）</label>
+        <input id="typingInput" class="typing-input" type="text" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="ここに入力">
+        <p class="typing-help visually-hidden" id="typingGuideText">次のキー: A / 左手小指</p>
+
+        <div class="typing-guide" aria-label="キーと指ガイド">
+          <div id="keyboardVisual" class="keyboard-visual"></div>
+          <div class="hands-visual">
+            <div class="hand-card">
+              <p>左手</p>
+              <div class="hand-shape left">
+                <span class="finger finger-top pinky" data-finger="left-pinky">小</span>
+                <span class="finger finger-top ring" data-finger="left-ring">薬</span>
+                <span class="finger finger-top middle" data-finger="left-middle">中</span>
+                <span class="finger finger-top index" data-finger="left-index">人</span>
+                <span class="palm"></span>
+                <span class="finger thumb" data-finger="left-thumb">親</span>
+              </div>
+            </div>
+            <div class="hand-card">
+              <p>右手</p>
+              <div class="hand-shape right">
+                <span class="finger finger-top index" data-finger="right-index">人</span>
+                <span class="finger finger-top middle" data-finger="right-middle">中</span>
+                <span class="finger finger-top ring" data-finger="right-ring">薬</span>
+                <span class="finger finger-top pinky" data-finger="right-pinky">小</span>
+                <span class="palm"></span>
+                <span class="finger thumb" data-finger="right-thumb">親</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="metrics">
+        <div class="metric" id="typingRoundMetric">正解: 0 / 8</div>
+        <div class="metric" id="typingMissMetric">不正解: 0</div>
+        <div class="metric" id="typingAvgMetric">平均入力時間: -</div>
+      </div>
+      <div class="result" id="typingResult"></div>
+    </section>
+  </main>
+
+  <div id="scoreOverlay" class="score-overlay" hidden>
+    <div class="score-dialog" role="dialog" aria-modal="true" aria-labelledby="scoreOverlayTitle">
+      <h2 id="scoreOverlayTitle" class="score-title">スコア</h2>
+      <div id="scoreOverlayBody" class="score-body"></div>
+      <div class="score-actions">
+        <button id="scoreOverlayCloseBtn" type="button">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/site_config.js"></script>
+  <script src="js/basic_ops_training.js"></script>
+  <script src="js/characters.js"></script>
+</body>
+</html>
