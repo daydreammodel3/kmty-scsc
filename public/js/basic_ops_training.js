@@ -363,7 +363,7 @@ const keyFingerMap = {
   "1": "left-pinky", "2": "left-ring", "3": "left-middle", "4": "left-index", "5": "left-index",
   "6": "right-index", "7": "right-index", "8": "right-middle", "9": "right-ring", "0": "right-pinky",
   "-": "right-pinky", "^": "right-pinky", "@": "right-pinky", "[": "right-pinky", "]": "right-pinky",
-  ";": "right-pinky", "'": "right-pinky", ",": "right-middle", ".": "right-ring", "/": "right-pinky",
+  ";": "right-pinky", ":": "right-pinky", ",": "right-middle", ".": "right-ring", "/": "right-pinky",
   "shift-left": "left-pinky", "shift-right": "right-pinky", enter: "right-pinky", backspace: "right-pinky",
   q: "left-pinky", a: "left-pinky", z: "left-pinky",
   w: "left-ring", s: "left-ring", x: "left-ring",
@@ -378,12 +378,13 @@ const keyFingerMap = {
 
 const keyboardRows = [
   ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "^", "backspace"],
-  ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "@", "[", "]"],
-  ["a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "enter"],
+  ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "@", "["],
+  ["a", "s", "d", "f", "g", "h", "j", "k", "l", ";", ":", "]", "enter"],
   ["shift-left", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "shift-right"],
   ["space"]
 ];
 
+// Shift と一緒に押すと出る記号（日本語 JIS 配列）。記号 → 元のキー
 const shiftedCharBaseMap = {
   "!": "1",
   "\"": "2",
@@ -391,16 +392,24 @@ const shiftedCharBaseMap = {
   "$": "4",
   "%": "5",
   "&": "6",
+  "'": "7",
   "(": "8",
   ")": "9",
+  "=": "-",
   "~": "^",
+  "`": "@",
   "{": "[",
+  "+": ";",
+  "*": ":",
   "}": "]",
-  ":": ";",
   "<": ",",
   ">": ".",
   "?": "/"
 };
+// 元のキー → Shift で出る記号（キートップの表示用）
+const shiftLabelByKey = Object.fromEntries(
+  Object.entries(shiftedCharBaseMap).map(([symbol, base]) => [base, symbol])
+);
 
 const logQueue = [];
 
@@ -756,6 +765,14 @@ function pickKeyboardPrompt(level, excludePrompt = null) {
   return picked;
 }
 
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 function renderKeyboardGuide() {
   const rows = keyboardRows.map((row) => {
     const keys = row.map((key) => {
@@ -766,16 +783,29 @@ function renderKeyboardGuide() {
         "shift-right": "Shift",
         backspace: "Back"
       };
-      const label = labels[key] || key.toUpperCase();
+      const isFunctionKey = Boolean(labels[key]);
       const extraClass = key === "space" ? " space" : (key === "enter" || key.startsWith("shift") || key === "backspace") ? " wide" : "";
+      // 文字キーは通常の表示と、Shift を押している間の表示（記号がなければ空）を持つ
+      const face = isFunctionKey
+        ? labels[key]
+        : `<span class="kbd-label">${escapeHtml(key.toUpperCase())}</span><span class="kbd-shift-label">${escapeHtml(shiftLabelByKey[key] || "")}</span>`;
       // キーは担当する指の色で塗る（指の絵と同じ色）
-      return `<div class="kbd-key${extraClass}" data-key="${key}" data-finger="${keyFingerMap[key] || ""}">${label}</div>`;
+      return `<div class="kbd-key${extraClass}${isFunctionKey ? " kbd-fn" : ""}" data-key="${key}" data-finger="${keyFingerMap[key] || ""}">${face}</div>`;
     }).join("");
     return `<div class="keyboard-row">${keys}</div>`;
   }).join("");
 
   keyboardVisual.innerHTML = rows;
 }
+
+// Shift を押している間は、キートップを Shift で出る記号に切り替える
+function setShiftView(pressed) {
+  keyboardVisual.classList.toggle("is-shift", pressed);
+}
+
+document.addEventListener("keydown", (e) => setShiftView(e.shiftKey));
+document.addEventListener("keyup", (e) => setShiftView(e.shiftKey));
+window.addEventListener("blur", () => setShiftView(false));
 
 function clearKeyFingerHighlight() {
   document.querySelectorAll(".kbd-key.active").forEach((el) => el.classList.remove("active"));
