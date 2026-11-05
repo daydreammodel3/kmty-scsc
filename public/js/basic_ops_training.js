@@ -86,6 +86,7 @@ const keyboardLevelButtons = document.querySelectorAll(".level-btn");
 const typingRoundMetric = document.getElementById("typingRoundMetric");
 const typingMissMetric = document.getElementById("typingMissMetric");
 const typingAvgMetric = document.getElementById("typingAvgMetric");
+const typingAccuracyMetric = document.getElementById("typingAccuracyMetric");
 const typingResult = document.getElementById("typingResult");
 const scoreOverlay = document.getElementById("scoreOverlay");
 const scoreOverlayTitle = document.getElementById("scoreOverlayTitle");
@@ -539,14 +540,119 @@ function buildComprehensiveMouseScore() {
   };
 }
 
+// ---- キーボードの成果: 「1キーあたり何秒か」と「正確さ」で示す
+// お題の長さ（1文字〜文章）が違っても比べられるよう、正解したお題の合計時間を
+// 打ったキー数で割る。ミリ秒ではなく秒で、ひと言の目安も添える。
+function getKeyboardPace() {
+  const totalMs = keyboardTimes.reduce((sum, value) => sum + value, 0);
+  if (keyboardCorrectChars === 0 || totalMs === 0) {
+    return null;
+  }
+  const secPerKey = totalMs / keyboardCorrectChars / 1000;
+  return {
+    secPerKey,
+    perMinute: Math.round(keyboardCorrectChars / (totalMs / 60000))
+  };
+}
+
+function getKeyAccuracyRate() {
+  const total = keyboardCorrectChars + keyboardMiss;
+  return total > 0 ? keyboardCorrectChars / total : 0;
+}
+
+// 切り捨てて、ミスが1回でもあれば 100% と表示しない
+function getKeyAccuracyPercent() {
+  return Math.floor(getKeyAccuracyRate() * 100);
+}
+
+function formatSecPerKey(pace) {
+  if (!pace) return "-";
+  return audience === "kids" ? `やく${pace.secPerKey.toFixed(1)}びょう` : `約${pace.secPerKey.toFixed(1)}秒`;
+}
+
+// KPM（1分あたりに正しく打てたキーの数）の目安。ローマ字入力を想定したおおよその区切り。
+// 区切りを変えるときはここだけ直す（画面下の目安の表もここから作る）。
+const KPM_LEVELS = [
+  { min: 0, name: "初心者", desc: "キーボードを見ながら打っている段階" },
+  { min: 100, name: "一般", desc: "普段使いなら十分" },
+  { min: 200, name: "中級者", desc: "オフィス業務がスムーズ" },
+  { min: 300, name: "上級者", desc: "ライター、プログラマー" },
+  { min: 400, name: "プロレベル", desc: "超高速" }
+];
+
+// こどもモードの目安: 小学生向けに区切りを低くし、ひよこが育っていく名前にする。
+// 「KPM」ということばは使わず、「1ぷんで うてた キーの かず」で伝える。
+const KPM_LEVELS_KIDS = [
+  { min: 0, name: "たまご", desc: "まずは ゆっくり、ただしく うとう" },
+  { min: 30, name: "ひよこ", desc: "キーの ばしょを おぼえてきたね" },
+  { min: 60, name: "こどり", desc: "すらすら うてるように なってきたよ" },
+  { min: 100, name: "わたりどり", desc: "おとなと おなじくらい はやいよ" },
+  { min: 150, name: "ふくろう めいじん", desc: "すごい！ タイピングの めいじん" }
+];
+
+function kpmLevels() {
+  return audience === "kids" ? KPM_LEVELS_KIDS : KPM_LEVELS;
+}
+
+// おとな / こども で文言を切り替える
+function byAudience(adultText, kidsText) {
+  return audience === "kids" ? kidsText : adultText;
+}
+
+function getKpmLevelIndex(kpm) {
+  let index = 0;
+  kpmLevels().forEach((level, i) => {
+    if (kpm >= level.min) index = i;
+  });
+  return index;
+}
+
+function formatKpmRange(index) {
+  const next = kpmLevels()[index + 1];
+  return next ? `${kpmLevels()[index].min}〜${next.min - 1}` : `${kpmLevels()[index].min}〜`;
+}
+
+// 総合演習は制限時間全体、通常の練習は正解したお題を打っていた時間で割る
+function getKeyboardKpm() {
+  if (keyboardSessionMode === "comprehensive") {
+    return Math.round(keyboardCorrectChars / (keyboardDurationSeconds / 60));
+  }
+  const pace = getKeyboardPace();
+  return pace ? pace.perMinute : null;
+}
+
+function renderKpmScale(activeIndex = -1) {
+  const scale = document.getElementById("kpmScale");
+  if (!scale) return;
+  scale.innerHTML = kpmLevels().map((level, i) => `
+    <div class="kpm-level${i === activeIndex ? " is-active" : ""}">
+      <div class="kpm-level-name">${level.name}</div>
+      <div class="kpm-level-range">${formatKpmRange(i)}${byAudience(" KPM", "こ")}</div>
+      <div class="kpm-level-desc">${level.desc}</div>
+    </div>
+  `).join("");
+}
+
+function buildKeyboardSummaryText() {
+  const pace = getKeyboardPace();
+  const accuracy = getKeyAccuracyPercent();
+  const kpm = getKeyboardKpm();
+  if (!pace || kpm === null) {
+    return `正確さ ${accuracy}%`;
+  }
+  const level = kpmLevels()[getKpmLevelIndex(kpm)];
+  renderKpmScale(getKpmLevelIndex(kpm));
+  if (audience === "kids") {
+    return `ただしく うてたのは ${accuracy}%。1ぷんで ${kpm}こ キーを うてたよ → いまは「${level.name}」（${level.desc}）。`;
+  }
+  return `正確さ ${accuracy}% ／ 1キー ${formatSecPerKey(pace)} ／ 1分で約${kpm}キー（${kpm} KPM）→ 目安は「${level.name}」（${level.desc}）。`;
+}
+
 function buildComprehensiveKeyboardScore() {
   const minutes = keyboardDurationSeconds / 60;
-  const accuracyRate = getAccuracyRate(keyboardSuccess, keyboardMiss);
+  // 正解は「お題」単位、ミスは「キー」単位で数えているので、キー単位にそろえて比べる
+  const accuracyRate = getKeyAccuracyRate();
   const kpm = Math.round((keyboardCorrectChars / minutes) * 10) / 10;
-  const wpm = Math.round((kpm / 5) * 10) / 10;
-  const avgInputMs = keyboardTimes.length > 0
-    ? Math.round(keyboardTimes.reduce((sum, value) => sum + value, 0) / keyboardTimes.length)
-    : 0;
   const speedScore = Math.min(60, Math.round((kpm / 180) * 60));
   const accuracyScore = Math.round(accuracyRate * 40);
   const totalScore = Math.max(0, Math.min(100, speedScore + accuracyScore));
@@ -557,12 +663,12 @@ function buildComprehensiveKeyboardScore() {
     metrics: [
       { label: "正解回数", value: `${keyboardSuccess} 回` },
       { label: "不正解回数", value: `${keyboardMiss} 回` },
-      { label: "KPM", value: `${kpm}` },
-      { label: "WPM", value: `${wpm}` },
+      { label: "1分あたりのキー数（KPM）", value: `${kpm}` },
       { label: "正確率", value: `${Math.round(accuracyRate * 100)}%` },
-      { label: "平均入力時間", value: avgInputMs > 0 ? `${avgInputMs} ms` : "-" }
+      { label: "1キーあたりの時間", value: formatSecPerKey(getKeyboardPace()) },
+      { label: "KPM の目安", value: `${kpmLevels()[getKpmLevelIndex(kpm)].name}（${kpmLevels()[getKpmLevelIndex(kpm)].desc}）` }
     ],
-    note: "KPM は 1 分あたりの正解文字数、WPM は 5 文字を 1 語とする一般的な速度指標です。180 KPM を満点基準にしています。"
+    note: `KPM は 1 分間に正しく打てたキーの数です。180 KPM を満点基準にしています。目安: ${kpmLevels().map((level, i) => `${level.name} ${formatKpmRange(i)}`).join(" ／ ")}`
   };
 }
 
@@ -1129,7 +1235,7 @@ function finishComprehensiveKeyboard() {
   stopKeyboardTimer();
   const avg = keyboardTimes.length ? Math.round(keyboardTimes.reduce((a, b) => a + b, 0) / keyboardTimes.length) : 0;
   keyboardStatus.textContent = "2分の総合キーボード演習が終了しました。";
-  typingResult.textContent = `終了しました。正解 ${keyboardSuccess} 回 / 不正解 ${keyboardMiss} 回 / 平均 ${avg} ms`;
+  typingResult.textContent = `${byAudience("終了しました。", "おしまい！ ")}${buildKeyboardSummaryText()}`;
   typingResult.className = "result score-good";
   keyboardStartBtn.disabled = false;
   keyboardStartBtn.textContent = currentCategory === "comprehensive" ? "総合キーボード演習開始" : "もう一度プレイ";
@@ -1376,22 +1482,21 @@ function updateClickMetrics() {
 }
 
 function updateKeyboardMetrics() {
-  const label = keyboardLevelLabels[selectedKeyboardLevel] || "キーボード";
   if (keyboardSessionMode === "comprehensive") {
-    typingRoundMetric.textContent = `正解: ${keyboardSuccess}`;
+    typingRoundMetric.textContent = `${byAudience("正解", "せいかい")}: ${keyboardSuccess}`;
   } else {
-    typingRoundMetric.textContent = `正解: ${keyboardSuccess} / ${getKeyboardTotal(selectedKeyboardLevel)}`;
+    typingRoundMetric.textContent = `${byAudience("正解", "せいかい")}: ${keyboardSuccess} / ${getKeyboardTotal(selectedKeyboardLevel)}`;
   }
-  typingMissMetric.textContent = `不正解: ${keyboardMiss}`;
+  typingMissMetric.textContent = `${byAudience("不正解", "まちがい")}: ${keyboardMiss}`;
   if (keyboardSessionMode === "comprehensive") {
     const remain = keyboardEndsAt ? Math.max(0, Math.ceil((keyboardEndsAt - Date.now()) / 1000)) : COMPREHENSIVE_SECONDS;
     typingAvgMetric.textContent = `残り時間: ${remain}秒`;
-  } else if (keyboardTimes.length > 0) {
-    const avg = Math.round(keyboardTimes.reduce((a, b) => a + b, 0) / keyboardTimes.length);
-    typingAvgMetric.textContent = `${label} 平均入力時間: ${avg} ms`;
   } else {
-    typingAvgMetric.textContent = `${label} 平均入力時間: -`;
+    typingAvgMetric.textContent = `${byAudience("1キーあたり", "1キー")}: ${formatSecPerKey(getKeyboardPace())}`;
   }
+  const keysTried = keyboardCorrectChars + keyboardMiss;
+  const accuracyLabel = byAudience("正確さ", "ただしさ");
+  typingAccuracyMetric.textContent = keysTried > 0 ? `${accuracyLabel}: ${getKeyAccuracyPercent()}%` : `${accuracyLabel}: -`;
 }
 
 function placeTarget(config) {
@@ -1901,11 +2006,13 @@ keyboardStartBtn.addEventListener("click", async () => {
   }
   await runCountdown(keyboardStatus, "表示されたローマ字を入力してください（自動判定）。", typingArea);
   const kbTotal = getKeyboardTotal(selectedKeyboardLevel);
-  typingRoundMetric.textContent = keyboardSessionMode === "comprehensive" ? "正解: 0" : `正解: 0 / ${kbTotal}`;
-  typingMissMetric.textContent = "不正解: 0";
+  typingRoundMetric.textContent = keyboardSessionMode === "comprehensive" ? `${byAudience("正解", "せいかい")}: 0` : `${byAudience("正解", "せいかい")}: 0 / ${kbTotal}`;
+  typingMissMetric.textContent = `${byAudience("不正解", "まちがい")}: 0`;
   typingAvgMetric.textContent = keyboardSessionMode === "comprehensive"
     ? `残り時間: ${keyboardDurationSeconds}秒`
-    : `${keyboardLevelLabels[selectedKeyboardLevel]} 平均入力時間: -`;
+    : `${byAudience("1キーあたり", "1キー")}: -`;
+  typingAccuracyMetric.textContent = `${byAudience("正確さ", "ただしさ")}: -`;
+  renderKpmScale();
   sessionText.textContent = "キーボード入力練習を開始しました。";
   keyboardStartBtn.textContent = "実行中...";
   if (keyboardSessionMode === "comprehensive") {
@@ -1924,7 +2031,7 @@ function completeKeyboardRound(success) {
     keyboardSuccess += 1;
     keyboardTimes.push(elapsed);
     keyboardCorrectChars += currentPromptRoma.length;
-    typingResult.textContent = `正解! ${elapsed} ms`;
+    typingResult.textContent = `正解! ${(elapsed / 1000).toFixed(1)}秒`;
     typingResult.className = "result score-good";
     queueEvent("input", "keyboard_typing", {
       level: selectedKeyboardLevel,
@@ -1966,7 +2073,7 @@ function completeKeyboardRound(success) {
     lockAudienceToggle(false);
     const avg = keyboardTimes.length ? Math.round(keyboardTimes.reduce((a, b) => a + b, 0) / keyboardTimes.length) : 0;
     keyboardStatus.textContent = "クリア! 入力精度が上がっています。";
-    typingResult.textContent = `完了しました。平均入力時間 ${avg} ms`;
+    typingResult.textContent = `${byAudience("完了しました。", "できたね！ ")}${buildKeyboardSummaryText()}`;
     typingResult.className = "result score-good";
     keyboardStartBtn.disabled = false;
     keyboardStartBtn.textContent = "もう一度プレイ";
@@ -2084,6 +2191,7 @@ function applyAudience(next) {
   });
   document.getElementById("levelKanjiBtn").hidden = audience === "kids";
   applyAudienceTexts();
+  renderKpmScale();
   if (audience === "kids" && selectedKeyboardLevel === "kanji") {
     setKeyboardLevel("hira");
   } else {
@@ -2098,6 +2206,7 @@ document.querySelectorAll("[data-audience-btn]").forEach((btn) => {
 });
 
 renderKeyboardGuide();
+renderKpmScale();
 hideComprehensiveMouseItems();
 setKeyboardLevel("hira");
 applyAudience(audience);

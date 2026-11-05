@@ -284,6 +284,15 @@ button:disabled {
   margin-top: 10px;
 }
 
+/* キーボード練習は 正解・不正解・正確さ・1キーあたり の4つを1列に並べる */
+#paneKeyboard .metrics {
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+}
+
+@media (max-width: 900px) {
+  #paneKeyboard .metrics { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
+}
+
 .metric {
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -803,4 +812,30 @@ button:disabled {
     height: 112px;
   }
   .typing-input { font-size: 20px; }
+}
+
+/* ---- KPM の目安（終了すると自分の段階が強調される） */
+.kpm-scale-wrap { margin-top: 12px; }
+.kpm-scale-title { margin: 0 0 6px; font-size: 14px; font-weight: bold; color: #2d4f66; }
+.kpm-scale { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.kpm-level {
+  border: 2px solid #d5dfeb;
+  border-radius: 10px;
+  background: #f7fafc;
+  padding: 8px;
+  text-align: center;
+  color: #5d6f80;
+}
+.kpm-level-name { font-weight: bold; font-size: 16px; color: #1f3b4e; }
+.kpm-level-range { font-size: 13px; }
+.kpm-level-desc { font-size: 12px; line-height: 1.4; margin-top: 2px; }
+.kpm-level.is-active {
+  border-color: #1f7a4d;
+  background: #e8f7ee;
+  box-shadow: 0 0 0 3px #ffffff, 0 0 0 5px #1f7a4d;
+}
+.kpm-level.is-active .kpm-level-name { color: #1f7a4d; }
+.kpm-level.is-active .kpm-level-name::before { content: "▶ "; }
+@media (max-width: 900px) {
+  .kpm-scale { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
