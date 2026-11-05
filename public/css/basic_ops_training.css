@@ -816,7 +816,6 @@ button:disabled {
 
 /* ---- KPM の目安（終了すると自分の段階が強調される） */
 .kpm-scale-wrap { margin-top: 12px; }
-.kpm-scale-title { margin: 0 0 6px; font-size: 14px; font-weight: bold; color: #2d4f66; }
 .kpm-scale { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
 .kpm-level {
   border: 2px solid #d5dfeb;
@@ -827,7 +826,6 @@ button:disabled {
   color: #5d6f80;
 }
 .kpm-level-name { font-weight: bold; font-size: 16px; color: #1f3b4e; }
-.kpm-level-range { font-size: 13px; }
 .kpm-level-desc { font-size: 12px; line-height: 1.4; margin-top: 2px; }
 .kpm-level.is-active {
   border-color: #1f7a4d;

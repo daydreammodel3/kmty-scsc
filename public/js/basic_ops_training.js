@@ -627,25 +627,15 @@ function renderKpmScale(activeIndex = -1) {
   scale.innerHTML = kpmLevels().map((level, i) => `
     <div class="kpm-level${i === activeIndex ? " is-active" : ""}">
       <div class="kpm-level-name">${level.name}</div>
-      <div class="kpm-level-range">${formatKpmRange(i)}${byAudience(" KPM", "こ")}</div>
       <div class="kpm-level-desc">${level.desc}</div>
     </div>
   `).join("");
 }
 
-function buildKeyboardSummaryText() {
-  const pace = getKeyboardPace();
-  const accuracy = getKeyAccuracyPercent();
+// 練習が終わったら、目安の表で自分の段階を強調する（文章では出さない）
+function showKpmResult() {
   const kpm = getKeyboardKpm();
-  if (!pace || kpm === null) {
-    return `正確さ ${accuracy}%`;
-  }
-  const level = kpmLevels()[getKpmLevelIndex(kpm)];
-  renderKpmScale(getKpmLevelIndex(kpm));
-  if (audience === "kids") {
-    return `ただしく うてたのは ${accuracy}%。1ぷんで ${kpm}こ キーを うてたよ → いまは「${level.name}」（${level.desc}）。`;
-  }
-  return `正確さ ${accuracy}% ／ 1キー ${formatSecPerKey(pace)} ／ 1分で約${kpm}キー（${kpm} KPM）→ 目安は「${level.name}」（${level.desc}）。`;
+  renderKpmScale(kpm === null ? -1 : getKpmLevelIndex(kpm));
 }
 
 function buildComprehensiveKeyboardScore() {
@@ -1235,7 +1225,8 @@ function finishComprehensiveKeyboard() {
   stopKeyboardTimer();
   const avg = keyboardTimes.length ? Math.round(keyboardTimes.reduce((a, b) => a + b, 0) / keyboardTimes.length) : 0;
   keyboardStatus.textContent = "2分の総合キーボード演習が終了しました。";
-  typingResult.textContent = `${byAudience("終了しました。", "おしまい！ ")}${buildKeyboardSummaryText()}`;
+  typingResult.textContent = "";
+  showKpmResult();
   typingResult.className = "result score-good";
   keyboardStartBtn.disabled = false;
   keyboardStartBtn.textContent = currentCategory === "comprehensive" ? "総合キーボード演習開始" : "もう一度プレイ";
@@ -2073,7 +2064,8 @@ function completeKeyboardRound(success) {
     lockAudienceToggle(false);
     const avg = keyboardTimes.length ? Math.round(keyboardTimes.reduce((a, b) => a + b, 0) / keyboardTimes.length) : 0;
     keyboardStatus.textContent = "クリア! 入力精度が上がっています。";
-    typingResult.textContent = `${byAudience("完了しました。", "できたね！ ")}${buildKeyboardSummaryText()}`;
+    typingResult.textContent = "";
+    showKpmResult();
     typingResult.className = "result score-good";
     keyboardStartBtn.disabled = false;
     keyboardStartBtn.textContent = "もう一度プレイ";
