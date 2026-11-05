@@ -364,7 +364,7 @@ const keyFingerMap = {
   "6": "right-index", "7": "right-index", "8": "right-middle", "9": "right-ring", "0": "right-pinky",
   "-": "right-pinky", "^": "right-pinky", "@": "right-pinky", "[": "right-pinky", "]": "right-pinky",
   ";": "right-pinky", "'": "right-pinky", ",": "right-middle", ".": "right-ring", "/": "right-pinky",
-  shift: "left-pinky", enter: "right-pinky", backspace: "right-pinky",
+  "shift-left": "left-pinky", "shift-right": "right-pinky", enter: "right-pinky", backspace: "right-pinky",
   q: "left-pinky", a: "left-pinky", z: "left-pinky",
   w: "left-ring", s: "left-ring", x: "left-ring",
   e: "left-middle", d: "left-middle", c: "left-middle",
@@ -373,14 +373,14 @@ const keyFingerMap = {
   i: "right-middle", k: "right-middle",
   o: "right-ring", l: "right-ring",
   p: "right-pinky",
-  " ": "right-thumb"
+  " ": "right-thumb", space: "right-thumb"
 };
 
 const keyboardRows = [
   ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "^", "backspace"],
   ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "@", "[", "]"],
   ["a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "enter"],
-  ["shift", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "shift"],
+  ["shift-left", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "shift-right"],
   ["space"]
 ];
 
@@ -762,12 +762,14 @@ function renderKeyboardGuide() {
       const labels = {
         space: "Space",
         enter: "Enter",
-        shift: "Shift",
+        "shift-left": "Shift",
+        "shift-right": "Shift",
         backspace: "Back"
       };
       const label = labels[key] || key.toUpperCase();
-      const extraClass = key === "space" ? " space" : (key === "enter" || key === "shift" || key === "backspace") ? " wide" : "";
-      return `<div class="kbd-key${extraClass}" data-key="${key}">${label}</div>`;
+      const extraClass = key === "space" ? " space" : (key === "enter" || key.startsWith("shift") || key === "backspace") ? " wide" : "";
+      // キーは担当する指の色で塗る（指の絵と同じ色）
+      return `<div class="kbd-key${extraClass}" data-key="${key}" data-finger="${keyFingerMap[key] || ""}">${label}</div>`;
     }).join("");
     return `<div class="keyboard-row">${keys}</div>`;
   }).join("");
@@ -787,8 +789,12 @@ function getTypingGuideHint(char) {
 
   if (shiftedCharBaseMap[char]) {
     const base = shiftedCharBaseMap[char];
-    const fingers = [keyFingerMap[base], keyFingerMap.shift].filter(Boolean);
-    return { keys: [base, "shift"], fingers, label: `Shift + ${base.toUpperCase()}` };
+    // Shift は、文字を打つ手と反対側の手の小指で押す
+    const baseFinger = keyFingerMap[base] || "";
+    const shiftKey = baseFinger.startsWith("left") ? "shift-right" : "shift-left";
+    const fingers = [keyFingerMap[shiftKey], baseFinger].filter(Boolean);
+    const shiftLabel = shiftKey === "shift-right" ? "右Shift" : "左Shift";
+    return { keys: [base, shiftKey], fingers, label: `${shiftLabel} + ${base.toUpperCase()}` };
   }
 
   const key = char.toLowerCase();
@@ -835,7 +841,7 @@ function highlightKeyAndFinger(nextChars) {
 
   const fingerLabels = [...fingerSet].map((id) => fingerLabelMap[id]);
   if (keyLabels.length === 1) {
-    typingGuideText.textContent = `次のキー: ${keyLabels[0]} / ${fingerLabels[0] || "-"}`;
+    typingGuideText.textContent = `次のキー: ${keyLabels[0]} / ${fingerLabels.join(" + ") || "-"}`;
     return;
   }
 
