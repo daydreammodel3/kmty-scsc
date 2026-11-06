@@ -8,7 +8,7 @@
   font-weight: 400;
   font-display: swap;
   src: local("BIZ UDPGothic"), local("BIZUDPGothic"),
-       url("../fonts/BIZUDPGothic-Regular.subset.woff2") format("woff2");
+       url("../fonts/BIZUDPGothic-Regular.32fc497e61.woff2") format("woff2");
 }
 
 @font-face {
@@ -16,7 +16,7 @@
   font-weight: 700;
   font-display: swap;
   src: local("BIZ UDPGothic Bold"), local("BIZUDPGothic-Bold"),
-       url("../fonts/BIZUDPGothic-Bold.subset.woff2") format("woff2");
+       url("../fonts/BIZUDPGothic-Bold.ba15960e18.woff2") format("woff2");
 }
 
 :root {

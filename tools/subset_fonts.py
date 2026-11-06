@@ -5,8 +5,11 @@
     python3 tools/subset_fonts.py
 
 画面の文言や練習問題を増やしたら、もう一度実行してコミットする。
+フォントのファイル名には中身のハッシュが付き、css/fonts.css も自動で書き換わる。
 ここに含まれない文字（例: 漢字変換で出た別の漢字）は、端末の日本語フォントで表示される。
 """
+import hashlib
+import re
 from pathlib import Path
 
 from fontTools import subset
@@ -15,6 +18,7 @@ ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ROOT / "public"
 SRC = ROOT / "fonts-src"
 OUT = PUBLIC / "fonts"
+CSS = PUBLIC / "css" / "fonts.css"
 
 RANGES = [
     (0x0020, 0x007E),  # ASCII
@@ -53,8 +57,22 @@ def main():
         subsetter = subset.Subsetter(options)
         subsetter.populate(text=text)
         subsetter.subset(font)
-        out = OUT / f"{name}.subset.woff2"
-        subset.save_font(font, str(out), options)
+        # ファイル名に中身のハッシュを入れる。フォントは1年キャッシュされるので、
+        # 中身が変わったら名前も変えて、ブラウザに新しいファイルを取りに行かせる。
+        tmp = OUT / f"{name}.tmp.woff2"
+        subset.save_font(font, str(tmp), options)
+        digest = hashlib.sha256(tmp.read_bytes()).hexdigest()[:10]
+        out = OUT / f"{name}.{digest}.woff2"
+        for old in OUT.glob(f"{name}.*.woff2"):
+            if old not in (tmp, out):
+                old.unlink()
+        tmp.replace(out)
+        css = re.sub(
+            rf'url\("\.\./fonts/{re.escape(name)}\.[^"]+\.woff2"\)',
+            f'url("../fonts/{out.name}")',
+            CSS.read_text(encoding="utf-8"),
+        )
+        CSS.write_text(css, encoding="utf-8")
         print(f"{out.relative_to(ROOT)}: {out.stat().st_size / 1024:.0f} KB")
     print(f"{len(text)} 文字")
 
