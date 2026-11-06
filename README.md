@@ -2,6 +2,8 @@
 
 Keyboard and Mouse Training Yard as Small, Cute, Stylized Characters.（「Y」は仮）
 
+公開先: https://kmty.yythzy.com/ （Firebase Hosting。`https://kmty-scsc.web.app/` でも同じサイトが開きます）
+
 小さくてかわいいキャラクターと一緒に、マウス（クリック・ダブルクリック・ドラッグ&ドロップ）とキーボード入力を練習できる静的サイトです。
 
 - サーバー・データベース・ログインは使いません。練習の記録は外部へ送りません（CSP で `connect-src 'none'`）。
@@ -56,3 +58,13 @@ firebase deploy --only hosting
 ```
 
 セキュリティヘッダーとキャッシュの設定は `firebase.json` にあります。
+
+### カスタムドメイン
+
+`kmty.yythzy.com` は、yythzy.com の DNS（Squarespace）に次のレコードを追加して Firebase Hosting につないでいます。
+
+| タイプ | 名前 | データ |
+|---|---|---|
+| CNAME | `kmty` | `kmty-scsc.web.app` |
+
+`www.yythzy.com`（Google Sites）や MX など、ほかのレコードには触れていません。
