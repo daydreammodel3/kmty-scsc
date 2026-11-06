@@ -68,3 +68,9 @@ firebase deploy --only hosting
 | CNAME | `kmty` | `kmty-scsc.web.app` |
 
 `www.yythzy.com`（Google Sites）や MX など、ほかのレコードには触れていません。
+
+## ライセンス
+
+- プログラム（HTML・CSS・JavaScript・`tools/`）とキャラクター（もち・ねこ・ひよこ・ふくろう先生、ファビコン）は **MIT ライセンス** です（`LICENSE`）。著作権表示（`Copyright (c) 2026 YYTHZYテクノロジー`）とライセンス文を残せば、商用を含めて自由に使い、改変・再配布できます。無保証です。
+- フォント（`fonts-src/`、`public/fonts/` の BIZ UDPゴシックとその抜き出し版）は **SIL Open Font License 1.1** です（`OFL.txt`）。MIT ライセンスの対象外です。
+
