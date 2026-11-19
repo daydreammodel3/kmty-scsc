@@ -1,6 +1,6 @@
-# kmty-SCSC
+# キーボードとマウスのひろば（kmty-SCSC）
 
-Keyboard and Mouse Training Yard as Small, Cute, Stylized Characters.（「Y」は仮）
+Keyboard and Mouse Training Yard as Small, Cute, Stylized Characters.
 
 公開先: https://kmty.yythzy.com/ （Firebase Hosting。`https://kmty-scsc.web.app/` でも同じサイトが開きます）
 
@@ -26,7 +26,7 @@ firebase.json           配信設定（セキュリティヘッダー・キャ�
 
 ## サイト名の変更
 
-`public/js/site_config.js` の `name` と `tagline` を書き換えます。`index.html` の `<title>` と見出しの初期表示も合わせて変えてください。
+`public/js/site_config.js` の `name`（画面に出す名前）・`code`（略称）・`tagline` を書き換えます。`index.html` の `<title>`、見出しの初期表示、ページ下の相互リンクも合わせて変えてください。相互リンクは visa-scsc・visp-scsc の `src/components/SeriesLinks.tsx` にもあります。
 
 ## 文言や練習問題を変えたとき（フォントの作り直し）
 
