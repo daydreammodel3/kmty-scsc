@@ -35,11 +35,25 @@ RANGES = [
 ]
 
 
+# コメントの中の文字は画面に出ないので、フォントに入れない
+COMMENT_PATTERNS = {
+    ".js": [re.compile(r"/\*.*?\*/", re.S), re.compile(r"(^|\s)//[^\n]*")],
+    ".css": [re.compile(r"/\*.*?\*/", re.S)],
+    ".html": [re.compile(r"<!--.*?-->", re.S)],
+}
+
+
+def strip_comments(path, text):
+    for pattern in COMMENT_PATTERNS.get(path.suffix, []):
+        text = pattern.sub(" ", text)
+    return text
+
+
 def site_text():
     chars = set()
     for path in PUBLIC.rglob("*"):
         if path.suffix in {".html", ".js", ".css", ".json"}:
-            chars.update(path.read_text(encoding="utf-8"))
+            chars.update(strip_comments(path, path.read_text(encoding="utf-8")))
     for lo, hi in RANGES:
         chars.update(chr(c) for c in range(lo, hi + 1))
     return "".join(sorted(c for c in chars if c.isprintable()))

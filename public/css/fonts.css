@@ -11,7 +11,7 @@
   font-weight: 400;
   font-display: swap;
   src: local("M PLUS Rounded 1c"), local("MPLUSRounded1c-Regular"),
-       url("../fonts/MPLUSRounded1c-Regular.042c5a92ed.woff2") format("woff2");
+       url("../fonts/MPLUSRounded1c-Regular.3235672ff9.woff2") format("woff2");
 }
 
 @font-face {
@@ -19,7 +19,7 @@
   font-weight: 700;
   font-display: swap;
   src: local("M PLUS Rounded 1c Bold"), local("MPLUSRounded1c-Bold"),
-       url("../fonts/MPLUSRounded1c-Bold.5b01ac0837.woff2") format("woff2");
+       url("../fonts/MPLUSRounded1c-Bold.d748c21f20.woff2") format("woff2");
 }
 
 @font-face {
@@ -27,7 +27,7 @@
   font-weight: 800;
   font-display: swap;
   src: local("M PLUS Rounded 1c ExtraBold"), local("MPLUSRounded1c-ExtraBold"),
-       url("../fonts/MPLUSRounded1c-ExtraBold.d3ebe37f79.woff2") format("woff2");
+       url("../fonts/MPLUSRounded1c-ExtraBold.d47c2608b8.woff2") format("woff2");
 }
 
 @font-face {
@@ -35,7 +35,7 @@
   font-weight: 400;
   font-display: swap;
   src: local("BIZ UDPGothic"), local("BIZUDPGothic"),
-       url("../fonts/BIZUDPGothic-Regular.2421a118b6.woff2") format("woff2");
+       url("../fonts/BIZUDPGothic-Regular.36618f8726.woff2") format("woff2");
 }
 
 @font-face {
@@ -43,7 +43,7 @@
   font-weight: 700;
   font-display: swap;
   src: local("BIZ UDPGothic Bold"), local("BIZUDPGothic-Bold"),
-       url("../fonts/BIZUDPGothic-Bold.674901a2c5.woff2") format("woff2");
+       url("../fonts/BIZUDPGothic-Bold.67a3eb6c6d.woff2") format("woff2");
 }
 
 :root {
