@@ -98,6 +98,7 @@ a {
 
 .brand-name {
   display: block;
+  white-space: nowrap;
   margin: 0;
   font-size: clamp(1.3rem, 3vw, 1.8rem);
   font-weight: 800;
@@ -105,16 +106,16 @@ a {
   line-height: 1.2;
 }
 
-.brand-name .nowrap {
-  display: inline-block;
-  white-space: nowrap;
-}
-
 .brand-sub {
   display: block;
   margin: 0;
   color: var(--ink-soft);
   font-size: 0.85rem;
+}
+
+.phrase {
+  display: inline-block;
+  white-space: nowrap;
 }
 
 /* おとな／こども（VISP-SCSC の .mode と同じ形） */
@@ -252,16 +253,8 @@ main {
     padding: 10px 16px 0;
   }
 
+  /* VISA/VISP と同じく、スマホではヘッダーのキャラを省いて名前に場所を譲る */
   .brand-chara {
-    width: 44px;
-    height: 44px;
-  }
-
-  .brand-name {
-    font-size: 1.2rem;
-  }
-
-  .brand-sub {
     display: none;
   }
 

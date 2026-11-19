@@ -1,4 +1,6 @@
-# キーボードとマウスのひろば（kmty-SCSC）
+# キーマウひろば（kmty-SCSC）
+
+キーボードとマウスのれんしゅうひろば。
 
 Keyboard and Mouse Training Yard as Small, Cute, Stylized Characters.
 
@@ -26,7 +28,7 @@ firebase.json           配信設定（セキュリティヘッダー・キャ�
 
 ## サイト名の変更
 
-`public/js/site_config.js` の `name`（画面に出す名前）・`code`（略称）・`tagline` を書き換えます。`index.html` の `<title>`、見出しの初期表示、ページ下の相互リンクも合わせて変えてください。相互リンクは visa-scsc・visp-scsc の `src/components/SeriesLinks.tsx` にもあります。
+`public/js/site_config.js` の `name`（画面に出す名前）・`description`（名前の下の説明）・`code`（略称）・`tagline` を書き換えます。`index.html` の `<title>`、見出しの初期表示、ページ下の相互リンクも合わせて変えてください。相互リンクは visa-scsc・visp-scsc の `src/components/SeriesLinks.tsx` にもあります。
 
 ## 文言や練習問題を変えたとき（フォントの作り直し）
 

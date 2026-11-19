@@ -1,26 +1,27 @@
 // サイト名はここ1か所で決める。
 window.SITE_CONFIG = {
   // 画面に出すサイト名（ヘッダーとタブのタイトル）
-  name: "キーボードとマウスのひろば",
-  // 狭い画面で折り返してよい切れ目（つなげると name になるように分ける）
-  nameParts: ["キーボードと", "マウスのひろば"],
+  name: "キーマウひろば",
+  // 名前の下に出す説明（ひらがな・カタカナだけなので、こどもモードでもそのまま）
+  // 狭い画面で折り返してよい切れ目で分けておく（つなげると1文になる）
+  description: ["キーボードとマウスの", "れんしゅうひろば"],
   // 略称。ページ下のクレジットに、もとになった英語と並べて出す（ほかの SCSC シリーズと同じ形）
   code: "kmty-SCSC",
   tagline: "Keyboard and Mouse Training Yard as Small, Cute, Stylized Characters."
 };
 
 (function applySiteName() {
-  const { name, nameParts = [name], code, tagline } = window.SITE_CONFIG;
-  document.title = name;
-  // 語の途中（「ひろ／ば」など）で折り返さないよう、切れ目ごとに折り返し禁止のかたまりにする
-  document.querySelectorAll("[data-site-name]").forEach((el) => {
-    el.replaceChildren(...nameParts.map((part) => {
-      const span = document.createElement("span");
-      span.className = "nowrap";
-      span.textContent = part;
-      return span;
-    }));
+  const { name, description, code, tagline } = window.SITE_CONFIG;
+  // 語の途中（「れんしゅ／う」など）で折り返さないよう、切れ目ごとに折り返し禁止のかたまりにする
+  const phrases = (parts) => parts.map((part) => {
+    const span = document.createElement("span");
+    span.className = "phrase";
+    span.textContent = part;
+    return span;
   });
+  document.title = name;
+  document.querySelectorAll("[data-site-name]").forEach((el) => { el.textContent = name; });
+  document.querySelectorAll("[data-site-description]").forEach((el) => { el.replaceChildren(...phrases(description)); });
   document.querySelectorAll("[data-site-tagline]").forEach((el) => { el.textContent = tagline; });
 
   // ページ下のクレジット。ほかの SCSC シリーズと同じく、略称のもとになった頭文字を太字にする。
