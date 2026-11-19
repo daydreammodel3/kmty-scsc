@@ -1,4 +1,5 @@
-"""BIZ UDPゴシックを、サイトで使う文字だけに絞って public/fonts/ に書き出す。
+"""M PLUS Rounded 1c（本文）と BIZ UDPゴシック（入力する文字・キー）を、
+サイトで使う文字だけに絞って public/fonts/ に書き出す。
 
 使い方（リポジトリのルートで）:
     pip install fonttools brotli
@@ -47,7 +48,13 @@ def site_text():
 def main():
     text = site_text()
     OUT.mkdir(parents=True, exist_ok=True)
-    for name in ("BIZUDPGothic-Regular", "BIZUDPGothic-Bold"):
+    for name in (
+        "MPLUSRounded1c-Regular",
+        "MPLUSRounded1c-Bold",
+        "MPLUSRounded1c-ExtraBold",
+        "BIZUDPGothic-Regular",
+        "BIZUDPGothic-Bold",
+    ):
         options = subset.Options()
         options.flavor = "woff2"
         options.layout_features = ["*"]
@@ -74,6 +81,8 @@ def main():
         )
         CSS.write_text(css, encoding="utf-8")
         print(f"{out.relative_to(ROOT)}: {out.stat().st_size / 1024:.0f} KB")
+    for lic in SRC.glob("OFL-*.txt"):
+        (OUT / lic.name).write_text(lic.read_text(encoding="utf-8"), encoding="utf-8")
     print(f"{len(text)} 文字")
 
 

@@ -15,19 +15,17 @@
   <link rel="stylesheet" href="css/characters.css">
 </head>
 <body>
-  <header class="app-header">
-    <div class="app-header-content">
-      <a href="./" class="app-header-brand">
-        <span class="brand-chara" data-chara="mochi"></span>
-        <span class="brand-text">
-          <span class="app-header-logo" data-site-name>kmty-SCSC</span>
-          <span class="brand-tagline" data-site-tagline>Keyboard and Mouse Training Yard as Small, Cute, Stylized Characters.</span>
-        </span>
-      </a>
-      <div class="audience-toggle" role="group" aria-label="モードの切り替え">
-        <button type="button" class="audience-btn" data-audience-btn="adult" aria-pressed="true">おとな<small>中学生以上</small></button>
-        <button type="button" class="audience-btn" data-audience-btn="kids" aria-pressed="false">こども<small>小学生まで</small></button>
-      </div>
+  <header class="top">
+    <a href="./" class="brand">
+      <span class="brand-chara" data-chara="mochi"></span>
+      <span>
+        <span class="brand-name" data-site-name>kmty-SCSC</span>
+        <span class="brand-sub" data-kids-text="マウスと キーボードの れんしゅう">マウスとキーボードの練習</span>
+      </span>
+    </a>
+    <div class="mode" role="group" aria-label="モードの切り替え">
+      <button type="button" class="audience-btn" data-audience-btn="adult" aria-pressed="true">おとな<small>中学生以上</small></button>
+      <button type="button" class="audience-btn" data-audience-btn="kids" aria-pressed="false">こども<small>小学生まで</small></button>
     </div>
   </header>
 
@@ -213,6 +211,16 @@
       </div>
     </section>
   </main>
+
+  <p class="credit" data-site-credit>
+    <abbr title="Keyboard and Mouse Training Yard as Small, Cute, Stylized Characters.">kmty-SCSC</abbr> — Keyboard and Mouse Training Yard as Small, Cute, Stylized Characters.
+  </p>
+  <nav class="series" aria-label="SCSC シリーズのほかのサイト">
+    <span class="series-label">SCSC シリーズ</span>
+    <span aria-current="page" title="マウスとキーボードの練習">kmty-SCSC</span>
+    <a href="https://visa.yythzy.com/" title="VISA-SCSC">アルゴリズムずかん</a>
+    <a href="https://visp.yythzy.com/" title="VISP-SCSC">ハンドシェイクずかん</a>
+  </nav>
 
   <div id="scoreOverlay" class="score-overlay" hidden>
     <div class="score-dialog" role="dialog" aria-modal="true" aria-labelledby="scoreOverlayTitle">
