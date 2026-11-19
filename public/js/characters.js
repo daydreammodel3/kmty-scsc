@@ -1,17 +1,19 @@
 // Small, Cute, Stylized Characters — すべてこのサイトのために描いたオリジナルのSVG。
 // 練習ロジック（basic_ops_training.js）には手を入れず、要素の中身と見た目だけを差し替える。
 (function () {
-  const INK = "#3a2c25";
-  const BLUSH = "#ffb3b8";
+  // 線・目・足は SCSC シリーズ共通のインク色（VISA-SCSC の NumBuddy、VISP-SCSC の PacketBuddy と同じ）
+  const INK = "#2d2a32";
+  const BLUSH = "#ff7aa2";
+  const legs = (y, l = 31, r = 56) => `<rect x="${l}" y="${y}" width="13" height="12" rx="6" fill="${INK}"/><rect x="${r}" y="${y}" width="13" height="12" rx="6" fill="${INK}"/>`;
 
   const face = (lx, rx, y, mouthY, open = true) => `
     ${open
-      ? `<circle cx="${lx}" cy="${y}" r="4.2" fill="${INK}"/><circle cx="${rx}" cy="${y}" r="4.2" fill="${INK}"/>
-         <circle cx="${lx + 1.4}" cy="${y - 1.4}" r="1.3" fill="#fff"/><circle cx="${rx + 1.4}" cy="${y - 1.4}" r="1.3" fill="#fff"/>`
+      ? `<circle cx="${lx}" cy="${y}" r="5" fill="${INK}"/><circle cx="${rx}" cy="${y}" r="5" fill="${INK}"/>
+         <circle cx="${lx + 1.8}" cy="${y - 1.8}" r="1.8" fill="#fff"/><circle cx="${rx + 1.8}" cy="${y - 1.8}" r="1.8" fill="#fff"/>`
       : `<path d="M${lx - 5} ${y} q5 4 10 0 M${rx - 5} ${y} q5 4 10 0" stroke="${INK}" stroke-width="2.6" fill="none" stroke-linecap="round"/>`}
-    <ellipse cx="${lx - 7}" cy="${y + 8}" rx="5.5" ry="3.5" fill="${BLUSH}" opacity=".85"/>
-    <ellipse cx="${rx + 7}" cy="${y + 8}" rx="5.5" ry="3.5" fill="${BLUSH}" opacity=".85"/>
-    ${mouthY == null ? "" : `<path d="M${(lx + rx) / 2 - 4} ${mouthY} q4 4 8 0" stroke="${INK}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`}`;
+    <ellipse cx="${lx - 7}" cy="${y + 8}" rx="5.5" ry="3.5" fill="${BLUSH}" opacity=".7"/>
+    <ellipse cx="${rx + 7}" cy="${y + 8}" rx="5.5" ry="3.5" fill="${BLUSH}" opacity=".7"/>
+    ${mouthY == null ? "" : `<path d="M${(lx + rx) / 2 - 4} ${mouthY} q4 4 8 0" stroke="${INK}" stroke-width="3" fill="none" stroke-linecap="round"/>`}`;
 
   // もち: クリックの的。色ちがいが4種類。
   const MOCHI_COLORS = [
@@ -23,11 +25,12 @@
   const mochi = (v = 0) => {
     const c = MOCHI_COLORS[v % MOCHI_COLORS.length];
     return `<svg class="chara-svg" viewBox="0 0 100 100" aria-hidden="true">
-      <ellipse cx="50" cy="92" rx="30" ry="5" fill="#000" opacity=".12"/>
-      <path d="M50 22 C 86 22 94 50 92 66 C 90 84 72 90 50 90 C 28 90 10 84 8 66 C 6 50 14 22 50 22 Z" fill="${c.body}" stroke="${c.edge}" stroke-width="3"/>
-      <ellipse cx="34" cy="38" rx="10" ry="5" fill="#fff" opacity=".8" transform="rotate(-20 34 38)"/>
-      <path d="M50 23 C 49 15 50 11 52 8" stroke="${c.leaf}" stroke-width="3" fill="none" stroke-linecap="round"/>
-      <path d="M52 9 C 60 3 70 6 70 12 C 63 16 56 14 52 9 Z" fill="${c.leaf}"/>
+      <ellipse cx="50" cy="96" rx="30" ry="4.5" fill="#000" opacity=".12"/>
+      ${legs(82)}
+      <path d="M50 22 C 86 22 94 50 92 66 C 90 84 72 90 50 90 C 28 90 10 84 8 66 C 6 50 14 22 50 22 Z" fill="${c.body}" stroke="${INK}" stroke-width="3"/>
+      <ellipse cx="34" cy="38" rx="10" ry="5" fill="#fff" opacity=".55" transform="rotate(-20 34 38)"/>
+      <path d="M50 23 C 49 15 50 11 52 8" stroke="${INK}" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M52 9 C 60 3 70 6 70 12 C 63 16 56 14 52 9 Z" fill="${c.leaf}" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>
       ${face(37, 63, 58, 68)}
     </svg>`;
   };
@@ -35,26 +38,27 @@
   // ねこ: ダブルクリックで目をさます。
   const neko = (awake) => `<svg class="chara-svg" viewBox="0 0 100 100" aria-hidden="true">
       <ellipse cx="50" cy="90" rx="34" ry="5" fill="#000" opacity=".12"/>
-      <path d="M22 40 L 26 16 L 42 30 Z M78 40 L 74 16 L 58 30 Z" fill="#f6b26b" stroke="#d48a3c" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M22 40 L 26 16 L 42 30 Z M78 40 L 74 16 L 58 30 Z" fill="#f6b26b" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
       <path d="M27 34 L 29 22 L 37 30 Z M73 34 L 71 22 L 63 30 Z" fill="#ffd7c2"/>
-      <ellipse cx="50" cy="56" rx="38" ry="32" fill="#f9c98c" stroke="#d48a3c" stroke-width="2.5"/>
+      <ellipse cx="50" cy="56" rx="38" ry="32" fill="#f9c98c" stroke="${INK}" stroke-width="3"/>
       <path d="M38 28 q3 6 0 10 M50 25 q3 6 0 10 M62 28 q3 6 0 10" stroke="#e39a4f" stroke-width="3" fill="none" stroke-linecap="round"/>
       ${face(37, 63, 55, 66, awake)}
       <path d="M44 63 l6 3 l6 -3" stroke="${INK}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".6"/>
       ${awake
         ? `<g class="chara-mark"><path d="M86 8 v14" stroke="#e8505b" stroke-width="5" stroke-linecap="round"/><circle cx="86" cy="30" r="3" fill="#e8505b"/></g>`
-        : `<g class="chara-zzz" fill="#7a8db0" font-weight="bold" font-family="sans-serif"><text x="78" y="22" font-size="14">z</text><text x="88" y="10" font-size="10">z</text></g>`}
+        : `<g class="chara-zzz" fill="#6b6577" font-weight="800" font-family="'M PLUS Rounded 1c', sans-serif"><text x="78" y="22" font-size="14">z</text><text x="88" y="10" font-size="10">z</text></g>`}
     </svg>`;
 
   // ひよこ: ドラッグしておうち（巣）まで運ぶ。
   const hiyoko = () => `<svg class="chara-svg" viewBox="0 0 100 100" aria-hidden="true">
-      <ellipse cx="50" cy="92" rx="28" ry="5" fill="#000" opacity=".12"/>
-      <path d="M48 18 q-4 -8 2 -10 q0 6 4 8" fill="#ffd84d" stroke="#e0b21f" stroke-width="2"/>
-      <circle cx="50" cy="56" r="36" fill="#ffe066" stroke="#e0b21f" stroke-width="3"/>
-      <ellipse cx="22" cy="62" rx="9" ry="13" fill="#ffd23f" stroke="#e0b21f" stroke-width="2.5" transform="rotate(25 22 62)"/>
-      <ellipse cx="78" cy="62" rx="9" ry="13" fill="#ffd23f" stroke="#e0b21f" stroke-width="2.5" transform="rotate(-25 78 62)"/>
+      <ellipse cx="50" cy="97" rx="28" ry="4" fill="#000" opacity=".12"/>
+      ${legs(84, 33, 54)}
+      <path d="M50 21 C 47 12, 56 10, 54 4" fill="none" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="50" cy="56" r="34" fill="#ffe066" stroke="${INK}" stroke-width="3"/>
+      <ellipse cx="22" cy="62" rx="9" ry="13" fill="#ffd23f" stroke="${INK}" stroke-width="2.5" transform="rotate(25 22 62)"/>
+      <ellipse cx="78" cy="62" rx="9" ry="13" fill="#ffd23f" stroke="${INK}" stroke-width="2.5" transform="rotate(-25 78 62)"/>
       ${face(38, 62, 50, null)}
-      <path d="M44 60 L 56 60 L 50 69 Z" fill="#ff9a3c" stroke="#e07a1f" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M44 60 L 56 60 L 50 69 Z" fill="#ff9a3c" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
     </svg>`;
 
   const nest = () => `<svg class="nest-svg" viewBox="0 0 160 70" aria-hidden="true">
@@ -65,18 +69,19 @@
 
   // ふくろう先生: キーボードのガイド役。
   const owl = (mood = "") => `<svg class="chara-svg" viewBox="0 0 100 100" aria-hidden="true">
-      <ellipse cx="50" cy="94" rx="26" ry="4" fill="#000" opacity=".12"/>
-      <path d="M22 30 L 20 10 L 38 22 Z M78 30 L 80 10 L 62 22 Z" fill="#8f7fb8" stroke="#6b5c94" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M50 16 C 82 16 88 44 86 64 C 84 86 68 92 50 92 C 32 92 16 86 14 64 C 12 44 18 16 50 16 Z" fill="#a597cf" stroke="#6b5c94" stroke-width="3"/>
+      <ellipse cx="50" cy="97" rx="26" ry="4" fill="#000" opacity=".12"/>
+      ${legs(84)}
+      <path d="M22 30 L 20 10 L 38 22 Z M78 30 L 80 10 L 62 22 Z" fill="#8f7fb8" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M50 16 C 82 16 88 44 86 64 C 84 84 68 90 50 90 C 32 90 16 84 14 64 C 12 44 18 16 50 16 Z" fill="#a597cf" stroke="${INK}" stroke-width="3"/>
       <ellipse cx="50" cy="68" rx="22" ry="20" fill="#efe8ff"/>
       <path d="M38 64 q4 3 8 0 M54 64 q4 3 8 0 M44 74 q4 3 8 0" stroke="#c9bdea" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <circle cx="35" cy="42" r="13" fill="#fff" stroke="#6b5c94" stroke-width="2.5"/>
-      <circle cx="65" cy="42" r="13" fill="#fff" stroke="#6b5c94" stroke-width="2.5"/>
+      <circle cx="35" cy="42" r="13" fill="#fff" stroke="${INK}" stroke-width="2.5"/>
+      <circle cx="65" cy="42" r="13" fill="#fff" stroke="${INK}" stroke-width="2.5"/>
       ${mood === "oops"
         ? `<path d="M29 42 h12 M59 42 h12" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>`
         : `<circle cx="36" cy="43" r="5" fill="${INK}"/><circle cx="64" cy="43" r="5" fill="${INK}"/><circle cx="38" cy="41" r="1.6" fill="#fff"/><circle cx="66" cy="41" r="1.6" fill="#fff"/>`}
-      <path d="M46 50 L 54 50 L 50 57 Z" fill="#ffb347" stroke="#e08a1f" stroke-width="1.8" stroke-linejoin="round"/>
-      <ellipse cx="22" cy="54" rx="4.5" ry="3" fill="${BLUSH}" opacity=".85"/><ellipse cx="78" cy="54" rx="4.5" ry="3" fill="${BLUSH}" opacity=".85"/>
+      <path d="M46 50 L 54 50 L 50 57 Z" fill="#ffb347" stroke="${INK}" stroke-width="1.8" stroke-linejoin="round"/>
+      <ellipse cx="22" cy="54" rx="4.5" ry="3" fill="${BLUSH}" opacity=".7"/><ellipse cx="78" cy="54" rx="4.5" ry="3" fill="${BLUSH}" opacity=".7"/>
     </svg>`;
 
   window.SCSC = { mochi, neko, hiyoko, nest, owl };

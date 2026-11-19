@@ -1,6 +1,8 @@
-# kmty-SCSC
+# キーマウひろば（kmty-SCSC）
 
-Keyboard and Mouse Training Yard as Small, Cute, Stylized Characters.（「Y」は仮）
+キーボードとマウスのれんしゅうひろば。
+
+Keyboard and Mouse Training Yard as Small, Cute, Stylized Characters.
 
 公開先: https://kmty.yythzy.com/ （Firebase Hosting。`https://kmty-scsc.web.app/` でも同じサイトが開きます）
 
@@ -9,7 +11,8 @@ Keyboard and Mouse Training Yard as Small, Cute, Stylized Characters.（「Y」�
 - サーバー・データベース・ログインは使いません。練習の記録は外部へ送りません（CSP で `connect-src 'none'`）。
 - キャラクター（もち・ねこ・ひよこ・ふくろう先生）は、このサイトのために描いたオリジナルの SVG です（`public/js/characters.js`）。
 - **おとな（中学生以上）／こども（小学生まで）** をヘッダーで切り替えられます。こどもモードでは漢字の練習を出さず、文章の問題や説明もひらがなで表示します。選んだモードはブラウザーに保存されます（保存できない環境でも、そのページを開いている間は有効です）。
-- フォント: BIZ UDPゴシック（ユニバーサルデザインフォント、SIL Open Font License 1.1、`public/fonts/OFL.txt`）。
+- デザインは SCSC シリーズ（[アルゴリズムずかん](https://visa.yythzy.com/)・[ハンドシェイクずかん](https://visp.yythzy.com/)）と共通です。色・角丸・影などは `public/css/global.css` の先頭にまとめてあり、visa-scsc・visp-scsc の `src/styles.css` と同じ値です。ページ下に、3 サイトの相互リンクがあります。
+- フォント: 本文は M PLUS Rounded 1c（シリーズ共通）、入力する文字とキーの刻印は BIZ UDPゴシック（ユニバーサルデザインフォント）。どちらも SIL Open Font License 1.1（`public/fonts/OFL-*.txt`）。外部のフォント配信は使わず、自前で配信します。
 
 ## 構成
 
@@ -25,11 +28,11 @@ firebase.json           配信設定（セキュリティヘッダー・キャ�
 
 ## サイト名の変更
 
-`public/js/site_config.js` の `name` と `tagline` を書き換えます。`index.html` の `<title>` と見出しの初期表示も合わせて変えてください。
+`public/js/site_config.js` の `name`（画面に出す名前）・`description`（名前の下の説明）・`code`（略称）・`tagline` を書き換えます。`index.html` の `<title>`、見出しの初期表示、ページ下の相互リンクも合わせて変えてください。相互リンクは visa-scsc・visp-scsc の `src/components/SeriesLinks.tsx` にもあります。
 
 ## 文言や練習問題を変えたとき（フォントの作り直し）
 
-`public/fonts/` には、サイトで使う文字（かな・英数字・記号と、HTML/JS/CSS に書かれた漢字）だけが入っています。文言や問題を増やしたら作り直してください。
+`public/fonts/` には、2 種類のフォントそれぞれについて、サイトで使う文字（かな・英数字・記号と、HTML/JS/CSS に書かれた漢字）だけが入っています。文言や問題を増やしたら作り直してください。
 
 ```sh
 pip install fonttools brotli
@@ -72,5 +75,5 @@ firebase deploy --only hosting
 ## ライセンス
 
 - プログラム（HTML・CSS・JavaScript・`tools/`）とキャラクター（もち・ねこ・ひよこ・ふくろう先生、ファビコン）は **MIT ライセンス** です（`LICENSE`）。著作権表示（`Copyright (c) 2026 YYTHZYテクノロジー`）とライセンス文を残せば、商用を含めて自由に使い、改変・再配布できます。無保証です。
-- フォント（`fonts-src/`、`public/fonts/` の BIZ UDPゴシックとその抜き出し版）は **SIL Open Font License 1.1** です（`OFL.txt`）。MIT ライセンスの対象外です。
+- フォント（`fonts-src/`、`public/fonts/` の M PLUS Rounded 1c・BIZ UDPゴシックとその抜き出し版）は **SIL Open Font License 1.1** です（`OFL-MPLUSRounded1c.txt`・`OFL-BIZUDPGothic.txt`）。MIT ライセンスの対象外です。
 

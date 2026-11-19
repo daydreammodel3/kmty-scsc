@@ -1,14 +1,41 @@
-/* ==================== ユニバーサルデザインフォント ====================
-   BIZ UDPゴシック（SIL Open Font License 1.1: ../fonts/OFL.txt）。
-   端末にインストール済みならそれを使い、なければ配信ファイルを読み込む。
-   全ページの文字は var(--font) を使う。 */
+/* ==================== フォント ====================
+   ほかの SCSC シリーズ（VISA-SCSC・VISP-SCSC）と同じく、本文は M PLUS Rounded 1c。
+   入力する文字やキーの刻印は、形を見分けやすいユニバーサルデザインフォントの
+   BIZ UDPゴシック（VISA-SCSC のコード表示と同じ役割）。
+   どちらも SIL Open Font License 1.1（../fonts/OFL-*.txt）。
+   CSP で外部フォントを読まないため、サイトで使う文字だけに絞ったものを自前で配信する
+   （tools/subset_fonts.py が下の url() のファイル名も書き換える）。 */
+
+@font-face {
+  font-family: "M PLUS Rounded 1c";
+  font-weight: 400;
+  font-display: swap;
+  src: local("M PLUS Rounded 1c"), local("MPLUSRounded1c-Regular"),
+       url("../fonts/MPLUSRounded1c-Regular.042c5a92ed.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "M PLUS Rounded 1c";
+  font-weight: 700;
+  font-display: swap;
+  src: local("M PLUS Rounded 1c Bold"), local("MPLUSRounded1c-Bold"),
+       url("../fonts/MPLUSRounded1c-Bold.5b01ac0837.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "M PLUS Rounded 1c";
+  font-weight: 800;
+  font-display: swap;
+  src: local("M PLUS Rounded 1c ExtraBold"), local("MPLUSRounded1c-ExtraBold"),
+       url("../fonts/MPLUSRounded1c-ExtraBold.d3ebe37f79.woff2") format("woff2");
+}
 
 @font-face {
   font-family: "BIZ UDPGothic";
   font-weight: 400;
   font-display: swap;
   src: local("BIZ UDPGothic"), local("BIZUDPGothic"),
-       url("../fonts/BIZUDPGothic-Regular.32fc497e61.woff2") format("woff2");
+       url("../fonts/BIZUDPGothic-Regular.2421a118b6.woff2") format("woff2");
 }
 
 @font-face {
@@ -16,11 +43,12 @@
   font-weight: 700;
   font-display: swap;
   src: local("BIZ UDPGothic Bold"), local("BIZUDPGothic-Bold"),
-       url("../fonts/BIZUDPGothic-Bold.ba15960e18.woff2") format("woff2");
+       url("../fonts/BIZUDPGothic-Bold.674901a2c5.woff2") format("woff2");
 }
 
 :root {
-  --font: "BIZ UDPGothic", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  --font: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Yu Gothic UI", system-ui, sans-serif;
+  --font-ud: "BIZ UDPGothic", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
 }
 
 body {
