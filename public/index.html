@@ -233,8 +233,9 @@
     </div>
   </div>
 
-  <script src="js/site_config.js"></script>
-  <script src="js/basic_ops_training.js"></script>
-  <script src="js/characters.js"></script>
+  <!-- 3 つとも遅延実行（defer と module は、この順に実行される） -->
+  <script src="js/site_config.js" defer></script>
+  <script src="js/training/main.js" type="module"></script>
+  <script src="js/characters.js" defer></script>
 </body>
 </html>

@@ -17,14 +17,35 @@ Keyboard and Mouse Training Yard as Small, Cute, Stylized Characters.
 ## 構成
 
 ```
-public/                 Firebase Hosting で配信するファイル
+public/                     Firebase Hosting で配信するファイル
   index.html
-  css/  js/
-  fonts/                サイトで使う文字だけに絞ったフォント（自動生成）
-fonts-src/              絞り込み前のフォント（配信しない）
-tools/subset_fonts.py   フォントの絞り込み
-firebase.json           配信設定（セキュリティヘッダー・キャッシュ）
+  css/
+  js/
+    site_config.js          サイト名
+    characters.js           キャラクターの絵と声かけ
+    training/               練習画面（ES モジュール）
+      main.js               入口。各練習を組み立てる
+      data.js prompts.js    設定・キー配置・お題（画面に触らない）
+      romaji.js keys.js     ローマ字の判定・押すキーと指の案内（同上）
+      scoring.js            点数・正確さ・速さの計算（同上）
+      ui.js audience.js keyboard-guide.js menu.js   画面の共通部品
+      exercises/            練習ごとの処理（クリック・ダブルクリック・ドラッグ・総合マウス・キーボード）
+  fonts/                    サイトで使う文字だけに絞ったフォント（自動生成）
+fonts-src/                  絞り込み前のフォント（配信しない）
+tools/subset_fonts.py       フォントの絞り込み
+tests/                      テスト（配信しない）
+firebase.json               配信設定（セキュリティヘッダー・キャッシュ）
 ```
+
+## テスト
+
+```sh
+npm test            # ローマ字の判定・点数などのロジック（Node.js 22 以上、追加のインストール不要）
+npm run test:e2e    # 練習画面を決まった手順で操作し、記録 tests/e2e/expected.jsonl と比べる（Playwright が必要）
+```
+
+`test:e2e` は、乱数と時計を固定したブラウザで全部の練習を操作し、画面の状態を記録と比べます。
+文言や動きを意図して変えたときは、画面で確かめてから `sh tests/e2e/check.sh --update` で記録を作り直してください。
 
 ## サイト名の変更
 
@@ -32,7 +53,7 @@ firebase.json           配信設定（セキュリティヘッダー・キャ�
 
 ## 文言や練習問題を変えたとき（フォントの作り直し）
 
-`public/fonts/` には、2 種類のフォントそれぞれについて、サイトで使う文字（かな・英数字・記号と、HTML/JS/CSS に書かれた漢字）だけが入っています。文言や問題を増やしたら作り直してください。
+`public/fonts/` には、2 種類のフォントそれぞれについて、サイトで使う文字（かな・英数字・記号と、HTML/JS/CSS に書かれた漢字。コメントの中の文字は除く）だけが入っています。文言や問題を増やしたら作り直してください。
 
 ```sh
 pip install fonttools brotli

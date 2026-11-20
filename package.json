@@ -1,0 +1,10 @@
+{
+  "name": "kmty-scsc",
+  "private": true,
+  "type": "module",
+  "description": "キーマウひろば（配信するのは public/ だけ。ここはテスト用）",
+  "scripts": {
+    "test": "node --test \"tests/unit/*.test.js\"",
+    "test:e2e": "sh tests/e2e/check.sh"
+  }
+}
